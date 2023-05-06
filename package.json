@@ -1,0 +1,36 @@
+{
+  "name": "ydb2csv",
+  "version": "1.0.0",
+  "description": "Convert YDB Document API to CSV",
+  "main": "dist/index.js",
+  "scripts": {
+    "cleanup": "rimraf dist",
+    "compiler": "npx tsc --pretty",
+    "compiler:watch": "npx tsc --watch",
+    "build": "npm run cleanup && npm run compiler",
+    "start": "node -e 'require(\"./dist/index\").handler()'",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RealtyNotifier/YDB2CSV.git"
+  },
+  "keywords": [
+    "YDB",
+    "CSV"
+  ],
+  "author": "activizator",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RealtyNotifier/YDB2CSV/issues"
+  },
+  "homepage": "https://github.com/RealtyNotifier/YDB2CSV#readme",
+  "devDependencies": {
+    "@types/node": "^20.1.0",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.328.0",
+    "dotenv": "^16.0.3"
+  }
+}
