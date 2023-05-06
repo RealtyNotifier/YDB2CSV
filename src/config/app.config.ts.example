@@ -1,0 +1,13 @@
+// https://cloud.yandex.ru/docs/ydb/docapi/tools/aws-sdk/query-and-scan
+// https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB.html#scan-property
+
+import { marshall } from "@aws-sdk/util-dynamodb";
+
+export const appConfig = {
+  TableName: "TableName", // Your Table Name
+  Limit: 20,
+  KeyConditionExpression: "id = :val", // Your KeyConditionExpression
+  ExpressionAttributeValues: marshall({
+    ":val": "7777777", // Your ExpressionAttributeValues
+  }),
+};
