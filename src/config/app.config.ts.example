@@ -3,7 +3,7 @@
 
 import { marshall } from "@aws-sdk/util-dynamodb";
 
-export const appConfig = {
+export const appConfig: IappConfig = {
   TableName: "TableName", // Your Table Name
   Limit: 20,
   KeyConditionExpression: "id = :val", // Your KeyConditionExpression
@@ -11,3 +11,16 @@ export const appConfig = {
     ":val": "7777777", // Your ExpressionAttributeValues
   }),
 };
+
+export const csvConfig = {
+  csvFilePath: "csv/result.csv",
+  delimiter: "\t",
+};
+
+interface IappConfig {
+  TableName: string;
+  Limit: number;
+  KeyConditionExpression: string;
+  ExpressionAttributeValues: any;
+  ExclusiveStartKey?: any;
+}
