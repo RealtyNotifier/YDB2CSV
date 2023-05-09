@@ -19,9 +19,14 @@ module.exports.handler = async function () {
   });
 
   const columnsNames = res
-    ?.filter((el) =>
-      csvConfig.columnFilter.some((columnName) => !el.includes(columnName))
-    )
+    ?.filter((el) => {
+      if (csvConfig.columnFilter && csvConfig.columnFilter.length > 0) {
+        return csvConfig.columnFilter.some(
+          (columnName) => !el.includes(columnName)
+        );
+      }
+      return true;
+    })
     .sort();
 
   console.log("Columns names to export: ", JSON.stringify(columnsNames));
