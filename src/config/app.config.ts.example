@@ -15,6 +15,7 @@ export const appConfig: IappConfig = {
 export const csvConfig = {
   csvFilePath: "csv/result.csv",
   delimiter: "\t",
+  columnFilter: ["user_data_params_"],
 };
 
 interface IappConfig {

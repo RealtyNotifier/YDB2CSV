@@ -5,6 +5,10 @@ import { flattenObject } from "./services/flatten.object";
 
 module.exports.handler = async function () {
   const items = await scanAll();
+  if (!items || items?.length == 0) {
+    console.log("Couldn't find items in db for such a query");
+    return;
+  }
 
   const flatItems = items?.map((i) => flattenObject(i));
   const keys = flatItems?.map((i) => Object.keys(i));
@@ -14,7 +18,13 @@ module.exports.handler = async function () {
     return Array.from(uniqueNames);
   });
 
-  const columnsNames = res?.sort();
+  const columnsNames = res
+    ?.filter((el) =>
+      csvConfig.columnFilter.some((columnName) => !el.includes(columnName))
+    )
+    .sort();
+
+  console.log("Columns names to export: ", JSON.stringify(columnsNames));
 
   const tableArray = [];
   tableArray.push(columnsNames);
@@ -22,6 +32,10 @@ module.exports.handler = async function () {
   flatItems?.map((item) => {
     const rowArray: string[] = [];
     columnsNames?.forEach((i) => {
+      item[i] =
+        typeof item[i] === "string"
+          ? item[i].replaceAll(csvConfig.delimiter, " ")
+          : item[i];
       rowArray.push(item[i] ? item[i] : "");
     });
     tableArray.push(rowArray);
@@ -31,9 +45,14 @@ module.exports.handler = async function () {
     flags: "w", // https://nodejs.org/api/fs.html#file-system-flags
   });
   tableArray.forEach((row) => {
-    const line = row?.join(csvConfig.delimiter).replace(/\n/g, " ");
+    const line = row
+      ?.join(csvConfig.delimiter)
+      .replace(/<\/?[^>]+(>|$)/gi, "")
+      .replace(/&nbsp;/gi, " ")
+      .replace(/[\r\n]+/g, " ");
     csv.write(`${line}\n`);
   });
   csv.end();
   console.log("Done: ", csvConfig.csvFilePath);
+  return;
 };

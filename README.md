@@ -31,5 +31,6 @@ https://docs.aws.amazon.com/AWSJavaScriptSDK/latest/AWS/DynamoDB.html#scan-prope
 export const csvConfig = {
   csvFilePath: "csv/result.csv",        // output file
   delimiter: "\t",                      // csv delimiter (now tab)
+  columnFilter: ["user_data_params_"],  // if column name include any filter word, remove the column from result csv
 };
 ```
